@@ -4,7 +4,7 @@ import com.google.cloud.logging.LogEntry;
 import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.core.LogEvent;
 
-/** Adds support for grouping logs by incoming http request */
+/** Adds support for grouping logs by incoming http request.*/
 public class TraceLoggingEventEnhancer implements LoggingEventEnhancer {
 
     // A key used by Cloud Logging for trace Id
@@ -19,7 +19,7 @@ public class TraceLoggingEventEnhancer implements LoggingEventEnhancer {
         ThreadContext.put(TRACE_ID, id);
     }
 
-    /** Clearing a trace Id from the MDC */
+    /** Clearing a trace Id from the MDC.*/
     public static void clearTraceId() {
         ThreadContext.remove(TRACE_ID);
     }
@@ -33,6 +33,9 @@ public class TraceLoggingEventEnhancer implements LoggingEventEnhancer {
         return ThreadContext.get(TRACE_ID);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void enhanceLogEntry(LogEntry.Builder builder, LogEvent e) {
         Object value = e.getContextData().getValue(TRACE_ID);

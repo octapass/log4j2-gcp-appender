@@ -9,7 +9,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <maven.version>3.8.4</maven.version>
+        <maven.version>3.8.6</maven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -24,7 +24,7 @@
         <checkstyle.version>10.5.0</checkstyle.version>
         <checkstyle.plugin.version>3.1.2</checkstyle.plugin.version>
         <compiler.plugin.version>3.9.0</compiler.plugin.version>
-        <owasp.plugin.version>6.5.3</owasp.plugin.version>
+        <owasp.plugin.version>7.4.0</owasp.plugin.version>
         <jxr.plugin.version>3.1.1</jxr.plugin.version>
         <enforcer.plugin.version>3.0.0</enforcer.plugin.version>
         <enforcer.rules.version>1.6.1</enforcer.rules.version>

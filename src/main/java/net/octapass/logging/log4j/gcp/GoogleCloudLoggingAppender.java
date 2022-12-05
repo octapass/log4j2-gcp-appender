@@ -31,11 +31,12 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Google Cloud Logging Appender for Apache Log4J2
+ * Google Cloud Logging Appender for Apache Log4J2.
  *
  * @author Andrei Petrenko <andrei.petrenko@octapass.com>
  * <p>
- * This {@link org.apache.logging.log4j.core.Appender} forwards log messages to <a href="https://cloud.google.com/logging/docs/">Google Cloud Logging</a>.
+ * This {@link org.apache.logging.log4j.core.Appender} forwards log messages to
+ * <a href="https://cloud.google.com/logging/docs/">Google Cloud Logging</a>.
  * If not specified, it uses the default project id (set by glcoud config set) and the application default credentials.
  */
 @Plugin(name = "GoogleCloudLogging", category = Node.CATEGORY, elementType = "appender", printObject = true)
@@ -45,7 +46,8 @@ public class GoogleCloudLoggingAppender extends AbstractAppender {
         LoadBalancerRegistry.getDefaultRegistry().register(new PickFirstLoadBalancerProvider());
     }
 
-    private static final String TYPE = "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent";
+    private static final String TYPE =
+            "type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent";
     private static final String LEVEL_NAME_KEY = "levelName";
     private static final String LEVEL_VALUE_KEY = "levelValue";
     private static final String LOGGER_NAME_KEY = "loggerName";
@@ -53,6 +55,7 @@ public class GoogleCloudLoggingAppender extends AbstractAppender {
             ImmutableList.of(new ContextDataEventEnhancer());
 
     private final GoogleCloudLoggingManager manager;
+    private final String gcpLogName;
     private final MonitoredResource monitoredResource;
     private final List<LoggingEnhancer> loggingEnhancers;
     private final List<LoggingEventEnhancer> loggingEventEnhancers;
@@ -60,13 +63,18 @@ public class GoogleCloudLoggingAppender extends AbstractAppender {
     private final Set<String> loggingEventEnhancerClassNames = new HashSet<>();
 
 
-    protected GoogleCloudLoggingAppender(GoogleCloudLoggingManager manager, String name, String gcpLogName,
-                                         Filter filter, Layout<? extends Serializable> layout,
-                                         boolean ignoreExceptions, Property[] properties,
+    protected GoogleCloudLoggingAppender(GoogleCloudLoggingManager manager,
+                                         String name,
+                                         String gcpLogName,
+                                         Filter filter,
+                                         Layout<? extends Serializable> layout,
+                                         boolean ignoreExceptions,
+                                         Property[] properties,
                                          MonitoredResource monitoredResource) {
         super(name, filter, layout, ignoreExceptions, properties);
         this.manager = manager;
         this.monitoredResource = monitoredResource;
+        this.gcpLogName = gcpLogName;
 
         loggingEnhancers = new ArrayList<>();
         List<LoggingEnhancer> resourceEnhancers = MonitoredResourceUtil.getResourceEnhancers();
@@ -76,6 +84,9 @@ public class GoogleCloudLoggingAppender extends AbstractAppender {
         loggingEventEnhancers.addAll(getLoggingEventEnhancers());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void append(LogEvent event) {
         manager.writeLogEntry(logEntryFor(event));
@@ -117,11 +128,17 @@ public class GoogleCloudLoggingAppender extends AbstractAppender {
         return enhancers;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
         super.start();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean stop(final long timeout, final TimeUnit timeUnit) {
         setStopping();
@@ -152,9 +169,6 @@ public class GoogleCloudLoggingAppender extends AbstractAppender {
 
     private static Severity severityFor(Level level) {
         switch (level.getStandardLevel()) {
-            case OFF -> {
-                return Severity.DEFAULT;
-            }
             case FATAL -> {
                 return Severity.ALERT;
             }
@@ -170,8 +184,10 @@ public class GoogleCloudLoggingAppender extends AbstractAppender {
             case DEBUG, TRACE, ALL -> {
                 return Severity.DEBUG;
             }
+            default -> {
+                return Severity.DEFAULT;
+            }
         }
-        return Severity.DEFAULT;
     }
 
 
@@ -190,7 +206,7 @@ public class GoogleCloudLoggingAppender extends AbstractAppender {
 
         LogEntry.Builder builder =
                 LogEntry.newBuilder(Payload.JsonPayload.of(jsonContent))
-                        .setLogName(getName())
+                        .setLogName(gcpLogName)
                         .setTimestamp(getTimestamp(event))
                         .setSeverity(severity)
                         .setResource(monitoredResource);
@@ -254,6 +270,7 @@ public class GoogleCloudLoggingAppender extends AbstractAppender {
 
     public static class Builder<B extends AbstractAppender.Builder<B>> extends AbstractAppender.Builder<B>
             implements org.apache.logging.log4j.core.util.Builder<GoogleCloudLoggingAppender> {
+        private static final int DEFAULT_BUFFER_SIZE = 50;
         @PluginElement("Layout")
         private Layout<? extends Serializable> layout = PatternLayout.createDefaultLayout();
 
@@ -286,8 +303,11 @@ public class GoogleCloudLoggingAppender extends AbstractAppender {
         private Boolean buffered = null;
 
         @PluginBuilderAttribute
-        private int bufferSize = 50;
+        private int bufferSize = DEFAULT_BUFFER_SIZE;
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public GoogleCloudLoggingAppender build() {
             try {

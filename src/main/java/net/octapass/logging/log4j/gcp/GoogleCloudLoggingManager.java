@@ -18,9 +18,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 
-public class GoogleCloudLoggingManager extends AbstractManager {
+public final class GoogleCloudLoggingManager extends AbstractManager {
 
-    private static final GoogleCloudLoggingManager2Factory factory = new GoogleCloudLoggingManager2Factory();
+    private static final GoogleCloudLoggingManager2Factory FACTORY = new GoogleCloudLoggingManager2Factory();
     private static final long DEFAULT_TIMEOUT = 7000;
 
     static {
@@ -54,7 +54,8 @@ public class GoogleCloudLoggingManager extends AbstractManager {
 
 
         String managerName = projectId + "@" + credentialsFileName;
-        return getManager(managerName, factory, new FactoryData(loggerContext, projectId, credentialsFileName, statusLogger, redirectToStdout));
+        return getManager(managerName, FACTORY, new FactoryData(loggerContext, projectId, credentialsFileName,
+                statusLogger, redirectToStdout));
     }
 
     public boolean releaseSub(final long timeout, final TimeUnit timeUnit) {
@@ -128,7 +129,8 @@ public class GoogleCloudLoggingManager extends AbstractManager {
                                boolean redirectToStdout) {
     }
 
-    private static class GoogleCloudLoggingManager2Factory implements ManagerFactory<GoogleCloudLoggingManager, FactoryData> {
+    private static class GoogleCloudLoggingManager2Factory implements
+            ManagerFactory<GoogleCloudLoggingManager, FactoryData> {
 
         @Override
         public GoogleCloudLoggingManager createManager(String name, FactoryData data) {

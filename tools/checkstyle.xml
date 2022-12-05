@@ -121,7 +121,7 @@
 
     <!-- Checks for imports                              -->
     <!-- See https://checkstyle.org/config_imports.html -->
-    <module name="AvoidStarImport"/>
+<!--    <module name="AvoidStarImport"/>-->
 <!--    <module name="IllegalImport"/> &lt;!&ndash; defaults to sun.* packages &ndash;&gt;-->
     <module name="RedundantImport"/>
     <module name="UnusedImports">
@@ -131,7 +131,11 @@
     <!-- Checks for Size Violations.                    -->
     <!-- See https://checkstyle.org/config_sizes.html -->
     <module name="MethodLength"/>
-    <module name="ParameterNumber"/>
+    <module name="ParameterNumber">
+      <property name="max" value="15"/>
+      <property name="tokens" value="CTOR_DEF"/>
+      <property name="ignoreOverriddenMethods" value="true"/>
+    </module>
 
     <!-- Checks for whitespace                               -->
     <!-- See https://checkstyle.org/config_whitespace.html -->

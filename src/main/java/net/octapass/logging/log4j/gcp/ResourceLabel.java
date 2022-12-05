@@ -9,7 +9,8 @@ import org.apache.logging.log4j.core.config.plugins.validation.constraints.Requi
 @Plugin(name = "ResourceLabel", category = Node.CATEGORY, printObject = true)
 public record ResourceLabel(String name, String value) {
 
-    public ResourceLabel(@Required @PluginAttribute("name") String name, @Required @PluginAttribute("value") String value) {
+    public ResourceLabel(@Required @PluginAttribute("name") String name,
+                         @Required @PluginAttribute("value") String value) {
         this.name = name;
         this.value = value;
     }
