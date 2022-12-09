@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Google Cloud Logging Appender for Apache Log4J2.
  *
- * @author Andrei Petrenko <andrei.petrenko@octapass.com>
+ * @author Andrei Petrenko {@literal <andrei.petrenko@octapass.com>}
  * <p>
  * This {@link org.apache.logging.log4j.core.Appender} forwards log messages to
  * <a href="https://cloud.google.com/logging/docs/">Google Cloud Logging</a>.
