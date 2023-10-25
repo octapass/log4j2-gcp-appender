@@ -4,7 +4,7 @@
 
     <groupId>net.octapass</groupId>
     <artifactId>log4j2-gcp-appender</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
