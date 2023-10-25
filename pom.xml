@@ -4,7 +4,7 @@
 
     <groupId>net.octapass</groupId>
     <artifactId>log4j2-gcp-appender</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -81,7 +81,7 @@
         <url>https://github.com/${github.org.name}/${github.repo.name}</url>
         <connection>scm:git:git://github.com/${github.org.name}/${github.repo.name}.git</connection>
         <developerConnection>scm:git:git@github.com:${github.org.name}/${github.repo.name}.git</developerConnection>
-        <tag>log4j2-gcp-appender-0.0.3</tag>
+        <tag>HEAD</tag>
     </scm>
     <distributionManagement>
         <snapshotRepository>
